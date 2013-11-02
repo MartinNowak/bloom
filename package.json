@@ -1,0 +1,9 @@
+{
+	"name": "bloom",
+	"description": "A basic bloom filter.",
+	"copyright": "Copyright © 2013-, Martin Nowak",
+	"license": "MIT",
+	"authors": ["Martin Nowak"],
+	"dependencies": {
+	}
+}
