@@ -13,6 +13,11 @@
 		"excludedSourceFiles": ["src/bench.d"],
 	},
 	{
+		"name": "unittest",
+		"targetType": "executable",
+		"targetName": "unittest",
+	},
+	{
 		"name": "bench",
 		"targetType": "executable",
 		"targetName": "bench",
