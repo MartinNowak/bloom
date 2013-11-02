@@ -5,5 +5,17 @@
 	"license": "MIT",
 	"authors": ["Martin Nowak"],
 	"dependencies": {
+	},
+	"configurations": [
+	{
+		"name": "library",
+		"targetType": "library",
+		"excludedSourceFiles": ["src/bench.d"],
+	},
+	{
+		"name": "bench",
+		"targetType": "executable",
+		"targetName": "bench",
 	}
+	],
 }
