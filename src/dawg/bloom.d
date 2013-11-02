@@ -14,6 +14,8 @@
 module dawg.bloom;
 import core.bitop;
 
+// version=CHEAP_HASH;
+
 /**
  * Basic bloom filter. This is a very fast data structure to test set
  * membership of a key.  It might give false positive results but
@@ -116,63 +118,81 @@ private:
 
     void hash(size_t key, ref uint[K] result)
     {
-        static if (K >= 1)
+        version (CHEAP_HASH)
         {
-            // Hsieh's Superfast Hash
-            ulong h0 = key;
-            h0 ^= h0 << 3;
-            h0 += h0 >> 5;
-            h0 ^= h0 << 4;
-            h0 += h0 >> 17;
-            h0 ^= h0 << 25;
-            h0 += h0 >> 6;
-            result[0] = cast(uint)(h0 - (h0 >> 32));
-        }
-        static if (K >= 2)
-        {
-            // Murmur Hash 3
-            ulong h1 = key;
-            h1 ^= h1 >> 16;
-            h1 *= 0x85ebca6b;
-            h1 ^= h1 >> 13;
-            h1 *= 0xc2b2ae35;
-            h1 ^= h1 >> 16;
-            result[1] = cast(uint)(h1 - (h1 >> 32));
-        }
-        static if (K >= 3)
-        {
-            // fast-hash
-            ulong h2 = key;
-            h2 ^= h2 >> 23;
-            h2 *= 0x2127599bf4325c37UL;
-            h2 ^= h2 >> 47;
-            result[2] = cast(uint)(h2 - (h2 >> 32));
-        }
-        static if (K > 3)
-        {
-            static uint bug11417(in uint x, in uint n)
+            const(ubyte)* p = cast(ubyte*)&key;
+            // rolling FNV-1a
+            enum offset_basis = 2166136261;
+            enum FNV_prime = 16777619;
+
+            uint hash = offset_basis;
+            foreach (i; SIota!(0, K))
             {
-                return x << n | x >> 32 - n;
+                hash ^= p[i % key.sizeof];
+                hash *= FNV_prime;
+                result[i] = hash;
             }
-            uint rol(uint n)(in uint x)
-            {
-                return bug11417(x, n);
-                //return x << n | x >> 32 - n;
-            }
-            // Bob Jenkins lookup3 final mix
-            uint h3 = result[0], h4 = result[1], h5 = result[2];
-            h5 ^= h4; h5 -= rol!14(h4);
-            h3 ^= h5; h3 -= rol!11(h5);
-            h4 ^= h3; h4 -= rol!25(h3);
-            h5 ^= h4; h5 -= rol!16(h4);
-            h3 ^= h5; h3 -= rol!4(h5);
-            h4 ^= h3; h4 -= rol!14(h3);
-            h5 ^= h4; h5 -= rol!24(h4);
         }
-        static if (K >= 4) result[3] = h3;
-        static if (K >= 5) result[4] = h4;
-        static if (K >= 6) result[5] = h5;
-        static assert(K <= 6, "Only 6 hash functions defined but "~K.stringof~" needed for optimal results.");
+        else
+        {
+            static if (K >= 1)
+            {
+                // Hsieh's Superfast Hash
+                ulong h0 = key;
+                h0 ^= h0 << 3;
+                h0 += h0 >> 5;
+                h0 ^= h0 << 4;
+                h0 += h0 >> 17;
+                h0 ^= h0 << 25;
+                h0 += h0 >> 6;
+                result[0] = cast(uint)(h0 - (h0 >> 32));
+            }
+            static if (K >= 2)
+            {
+                // Murmur Hash 3
+                ulong h1 = key;
+                h1 ^= h1 >> 16;
+                h1 *= 0x85ebca6b;
+                h1 ^= h1 >> 13;
+                h1 *= 0xc2b2ae35;
+                h1 ^= h1 >> 16;
+                result[1] = cast(uint)(h1 - (h1 >> 32));
+            }
+            static if (K >= 3)
+            {
+                // fast-hash
+                ulong h2 = key;
+                h2 ^= h2 >> 23;
+                h2 *= 0x2127599bf4325c37UL;
+                h2 ^= h2 >> 47;
+                result[2] = cast(uint)(h2 - (h2 >> 32));
+            }
+            static if (K > 3)
+            {
+                static uint bug11417(in uint x, in uint n)
+                {
+                    return x << n | x >> 32 - n;
+                }
+                uint rol(uint n)(in uint x)
+                {
+                    return bug11417(x, n);
+                    //return x << n | x >> 32 - n;
+                }
+                // Bob Jenkins lookup3 final mix
+                uint h3 = result[0], h4 = result[1], h5 = result[2];
+                h5 ^= h4; h5 -= rol!14(h4);
+                h3 ^= h5; h3 -= rol!11(h5);
+                h4 ^= h3; h4 -= rol!25(h3);
+                h5 ^= h4; h5 -= rol!16(h4);
+                h3 ^= h5; h3 -= rol!4(h5);
+                h4 ^= h3; h4 -= rol!14(h3);
+                h5 ^= h4; h5 -= rol!24(h4);
+            }
+            static if (K >= 4) result[3] = h3;
+            static if (K >= 5) result[4] = h4;
+            static if (K >= 6) result[5] = h5;
+            static assert(K <= 6, "Only 6 hash functions defined but "~K.stringof~" needed for optimal results.");
+        }
 
         immutable mask = _size - 1;
         foreach (i; SIota!(0, K))
