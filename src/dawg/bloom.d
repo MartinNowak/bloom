@@ -169,14 +169,9 @@ private:
             }
             static if (K > 3)
             {
-                static uint bug11417(in uint x, in uint n)
-                {
-                    return x << n | x >> 32 - n;
-                }
                 uint rol(uint n)(in uint x)
                 {
-                    return bug11417(x, n);
-                    //return x << n | x >> 32 - n;
+                    return x << n | x >> 32 - n;
                 }
                 // Bob Jenkins lookup3 final mix
                 uint h3 = result[0], h4 = result[1], h5 = result[2];
