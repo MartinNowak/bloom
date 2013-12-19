@@ -71,7 +71,7 @@ struct BloomFilter(size_t BitsPerEntry=4) if (BitsPerEntry > 0)
     }
 
     /// returns the number of entries
-    size_t size()
+    size_t size() const
     {
         return _size / M_N;
     }
@@ -100,7 +100,7 @@ struct BloomFilter(size_t BitsPerEntry=4) if (BitsPerEntry > 0)
     }
 
     /// test membership of key
-    bool test(size_t key)
+    bool test(size_t key) const
     {
         uint[K] hashes = void;
         hash(key, hashes);
@@ -116,7 +116,7 @@ private:
     enum K = cast(size_t)(M_N * LN2 + 0.5);
     enum real LN2 = 0x1.62e42fefa39ef35793c7673007e5fp-1L; /** ln 2  = 0.693147... */
 
-    void hash(size_t key, ref uint[K] result)
+    void hash(size_t key, ref uint[K] result) const
     {
         version (CHEAP_HASH)
         {
