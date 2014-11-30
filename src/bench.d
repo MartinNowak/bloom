@@ -1,7 +1,7 @@
 import std.datetime, std.stdio;
 import dawg.bloom;
 
-int bench(size_t BitsPerEntry)(size_t nentries)
+bool bench(size_t BitsPerEntry)(size_t nentries)
 {
     writeln("bench BitsPerEntry ", BitsPerEntry, " nentries ", nentries);
 
@@ -12,16 +12,12 @@ int bench(size_t BitsPerEntry)(size_t nentries)
         filter.insert(i);
     writeln("insert took ", sw.peek.usecs, " µs"); sw.reset();
     foreach (i; 0 .. nentries)
-        if (!filter.test(i)) return 1;
+        if (!filter.test(i)) return false;
     writeln("test took ", sw.peek.usecs, " µs"); sw.reset();
-    return 0;
+    return true;
 }
 
 int main()
 {
-    if (auto res = bench!(4)(1_000_000))
-        return res;
-    if (auto res = bench!(8)(1_000_000))
-        return res;
-    return 0;
+    return !bench!(4)(1_000_000) || !bench!(8)(1_000_000);
 }

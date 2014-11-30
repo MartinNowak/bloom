@@ -220,6 +220,7 @@ unittest
     foreach (K; SIota!(1, 10))
     {
         auto filter = BloomFilter!(K)(N);
+        assert(filter.size == 512);
         auto p = cast(size_t)&filter / 4096;
         filter.insert(p);
         assert(filter.test(p));
