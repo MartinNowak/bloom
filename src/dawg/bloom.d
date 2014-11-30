@@ -15,15 +15,12 @@ module dawg.bloom;
 import core.bitop;
 
 /**
- * Basic bloom filter. This is a very fast data structure to test set
- * membership of a key.  It might give false positive results but
- * never false negative.
+ * Basic bloom filter. This is a very fast data structure to test set membership
+ * of a key.  It might give false positive results but never false negative
+ * ones.  So if a key was inserted testing for the same key is guaranteed to be
+ * true, but testing might also be true even though a key was never inserted.
  *
- * Params:
- *  BitsPerEntry = Set the number of bits allocated per entry.
- *  CheapHash = Use a faster but less good hash function.
- *
- * Asymptotic false-positive rates for different BitsPerEntry:
+ * Asymptotic false-positive rates for different BitsPerEntry settings.
  *
  * 1 - 63.2%
  * 2 - 39.3%
@@ -34,13 +31,17 @@ import core.bitop;
  * 7 - 3.47%
  * 8 - 2.15%
  * 9 - 1.33%
+ *
+ * Params:
+ *  BitsPerEntry = Set the number of bits allocated per entry.
+ *  CheapHash = Use a faster but less good hash function.
  */
 struct BloomFilter(size_t BitsPerEntry=4, bool CheapHash=true) if (BitsPerEntry > 0)
 {
     /// no copying
     @disable this(this);
 
-    /// construct filter for nentries
+    /// construct a bloom filter for nentries
     this(size_t nentries)
     {
         resize(nentries);
@@ -51,7 +52,7 @@ struct BloomFilter(size_t BitsPerEntry=4, bool CheapHash=true) if (BitsPerEntry 
         reset();
     }
 
-    /// frees all bits
+    /// free all bits
     void reset()
     {
         import core.stdc.stdlib : free;
@@ -61,7 +62,7 @@ struct BloomFilter(size_t BitsPerEntry=4, bool CheapHash=true) if (BitsPerEntry 
         _p = null;
     }
 
-    /// clears all bits
+    /// clear all bits
     void clear()
     {
         import core.stdc.string : memset;
@@ -69,13 +70,13 @@ struct BloomFilter(size_t BitsPerEntry=4, bool CheapHash=true) if (BitsPerEntry 
         memset(_p, 0, _size / 8);
     }
 
-    /// returns the number of entries
+    /// return the number of entries
     size_t size() const
     {
         return _size / M_N;
     }
 
-    /// resize for nentries members, clears all bits
+    /// resize to nentries, bits are cleared
     void resize(size_t nentries)
     in { assert(nentries); }
     body
@@ -113,7 +114,7 @@ private:
     // The asymptotic false positive rate is (1 - e^(-k*n/m))^k.
     enum M_N = BitsPerEntry;
     enum K = cast(size_t)(M_N * LN2 + 0.5);
-    enum real LN2 = 0x1.62e42fefa39ef35793c7673007e5fp-1L; /** ln 2  = 0.693147... */
+    enum real LN2 = 0x1.62e42fefa39ef35793c7673007e5fp-1L; /* ln 2  = 0.693147... */
 
     void hash(size_t key, ref uint[K] result) const
     {
