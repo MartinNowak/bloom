@@ -93,8 +93,7 @@ struct BloomFilter(size_t BitsPerEntry=4, bool CheapHash=true) if (BitsPerEntry 
     /// insert a key
     void insert(size_t key)
     {
-        uint[K] hashes = void;
-        hash(key, hashes);
+        immutable hashes = hash(key);
         foreach (i; SIota!K)
             bts(_p, hashes[i]);
     }
@@ -102,8 +101,7 @@ struct BloomFilter(size_t BitsPerEntry=4, bool CheapHash=true) if (BitsPerEntry 
     /// test membership of key
     bool test(size_t key) const
     {
-        uint[K] hashes = void;
-        hash(key, hashes);
+        immutable hashes = hash(key);
         foreach (i; SIota!K)
             if (!bt(_p, hashes[i])) return false;
         return true;
@@ -116,8 +114,10 @@ private:
     enum K = cast(size_t)(M_N * LN2 + 0.5);
     enum real LN2 = 0x1.62e42fefa39ef35793c7673007e5fp-1L; /* ln 2  = 0.693147... */
 
-    void hash(size_t key, ref uint[K] result) const
+    uint[K] hash(size_t key) const
     {
+        uint[K] result = void;
+
         static if (CheapHash)
         {
             const(ubyte)* p = cast(ubyte*)&key;
@@ -192,6 +192,8 @@ private:
         immutable mask = _size - 1;
         foreach (i; SIota!(0, K))
             result[i] &= mask;
+
+        return result;
     }
 
     size_t _size;
