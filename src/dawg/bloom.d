@@ -14,8 +14,6 @@
 module dawg.bloom;
 import core.bitop;
 
-// version=CHEAP_HASH;
-
 /**
  * Basic bloom filter. This is a very fast data structure to test set
  * membership of a key.  It might give false positive results but
@@ -23,6 +21,7 @@ import core.bitop;
  *
  * Params:
  *  BitsPerEntry = Set the number of bits allocated per entry.
+ *  CheapHash = Use a faster but less good hash function.
  *
  * Asymptotic false-positive rates for different BitsPerEntry:
  *
@@ -36,7 +35,7 @@ import core.bitop;
  * 8 - 2.15%
  * 9 - 1.33%
  */
-struct BloomFilter(size_t BitsPerEntry=4) if (BitsPerEntry > 0)
+struct BloomFilter(size_t BitsPerEntry=4, bool CheapHash=true) if (BitsPerEntry > 0)
 {
     /// no copying
     @disable this(this);
@@ -118,7 +117,7 @@ private:
 
     void hash(size_t key, ref uint[K] result) const
     {
-        version (CHEAP_HASH)
+        static if (CheapHash)
         {
             const(ubyte)* p = cast(ubyte*)&key;
             // rolling FNV-1a
@@ -216,22 +215,26 @@ template SIota(size_t n)
 
 unittest
 {
+    template TT(T...) { alias TT = T; }
     enum N = 500;
-    foreach (K; SIota!(1, 10))
+    foreach (CheapHash; TT!(true, false))
     {
-        auto filter = BloomFilter!(K)(N);
-        assert(filter.size == 512);
-        auto p = cast(size_t)&filter / 4096;
-        filter.insert(p);
-        assert(filter.test(p));
-
-        foreach (i; 0 .. N)
+        foreach (K; SIota!(1, 10))
         {
-            filter.insert(p + i);
-            assert(filter.test(p + i));
+            auto filter = BloomFilter!(K, CheapHash)(N);
+            assert(filter.size == 512);
+            auto p = cast(size_t)&filter / 4096;
+            filter.insert(p);
+            assert(filter.test(p));
+
+            foreach (i; 0 .. N)
+            {
+                filter.insert(p + i);
+                assert(filter.test(p + i));
+            }
+            filter.clear();
+            foreach (i; 0 .. N)
+                assert(!filter.test(p + i));
         }
-        filter.clear();
-        foreach (i; 0 .. N)
-            assert(!filter.test(p + i));
     }
 }
