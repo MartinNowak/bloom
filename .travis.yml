@@ -8,8 +8,10 @@ install:
   - curl -fsSL http://code.dlang.org/files/dub-${DUB_VER}-linux-x86_64.tar.gz | tar -C ~/dmd2/linux/bin64 -xzf -
   - export PATH="${HOME}/dmd2/linux/bin64:${PATH}"
   - export LD_LIBRARY_PATH="${HOME}/dmd2/linux/lib64:${LD_LIBRARY_PATH}"
+  - dub fetch doveralls
 
 script:
-  - dub test
+  - dub test -b unittest-cov
+  - dub run doveralls
 
 sudo: false
