@@ -1,17 +1,16 @@
 language: d
 
-install:
-  - DMD_VER=2.066.1
-  - DUB_VER=0.9.22
-  - curl -fsSL http://downloads.dlang.org/releases/2014/dmd.${DMD_VER}.linux.zip > dmd.zip
-  - unzip -q -d ~ dmd.zip
-  - curl -fsSL http://code.dlang.org/files/dub-${DUB_VER}-linux-x86_64.tar.gz | tar -C ~/dmd2/linux/bin64 -xzf -
-  - export PATH="${HOME}/dmd2/linux/bin64:${PATH}"
-  - export LD_LIBRARY_PATH="${HOME}/dmd2/linux/lib64:${LD_LIBRARY_PATH}"
-  - dub fetch doveralls
+d:
+  - dmd-2.065.0
+  - dmd-2.066.1
+  - gdc-4.9.0
+  - ldc-0.14.0
+
+install: dub fetch doveralls
 
 script:
-  - dub test -b unittest-cov
-  - dub run doveralls
+  - dub test -b unittest-cov --compiler=${DC}
+  # append missing newline to doveralls output
+  - dub run doveralls --compiler=${DC} && echo ''
 
 sudo: false
