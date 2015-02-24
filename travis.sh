@@ -3,7 +3,7 @@
 set -e -o pipefail
 
 if [ "$COVERAGE" = true ]; then
-    dub fetch doveralls
+    dub fetch doveralls --version=~master
     dub test -b unittest-cov --compiler=${DC}
     dub run doveralls --compiler=${DC}
 else
