@@ -4,7 +4,7 @@ sudo: false
 
 matrix:
   include:
-    - d: dmd-2.067.0-b2
+    - d: dmd-2.067.0-rc1
       env:
         - COVERAGE=true
           # set the GH_TOKEN to deploy documentation
