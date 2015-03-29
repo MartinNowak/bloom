@@ -11,8 +11,9 @@ else
 fi
 
 if [ ! -z "$GH_TOKEN" ]; then
-    dub build -b ddox --compiler=${DC}
-    cd docs
+    curl -fsSL http://releases.defenestrate.eu/harbored-mod-0.2.0/hmod-x86-64.tar.gz | tar -zxf -
+    ./hmod src
+    cd doc
     git init
     git config user.name "Travis-CI"
     git config user.email "travis@nodemeatspace.com"
