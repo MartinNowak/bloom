@@ -21,7 +21,7 @@ if [ ! -z "$GH_TOKEN" ]; then
     cd docs
     git init
     git config user.name 'Travis-CI'
-    git config user.email 'travis@nodemeatspace.com'
+    git config user.email '<>'
     git add .
     git commit -m 'Deployed to Github Pages'
     git push --force --quiet "https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}" master:gh-pages
