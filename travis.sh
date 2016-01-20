@@ -1,16 +1,17 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
-set -e -o pipefail
+set -ueo pipefail
 
-if [ "$COVERAGE" = true ]; then
+if [ ! -z "${COVERAGE:-}" ]; then
     dub fetch doveralls
-    dub test -b unittest-cov --compiler=${DC}
-    dub run doveralls --compiler=${DC}
+    dub test -b unittest-cov
+    dub run doveralls
 else
-    dub test --compiler=${DC}
+    dub test
 fi
 
-if [ ! -z "$GH_TOKEN" ]; then
+if [ ! -z "${GH_TOKEN:-}" ]; then
+    # build docs, TODO: replace w/ ddoxTool in dub.json
     DFLAGS='-c -o- -Df__dummy.html -Xfdocs.json' dub build
     dub fetch scod
     dub run scod -- filter --min-protection=Protected --only-documented docs.json
@@ -18,6 +19,7 @@ if [ ! -z "$GH_TOKEN" ]; then
     pkg_path=$(dub list | sed -n 's|.*scod.*: ||p')
     rsync -ru "$pkg_path"public/ docs/
 
+    # push docs to gh-pages branch
     cd docs
     git init
     git config user.name 'Travis-CI'
