@@ -11,3 +11,7 @@ matrix:
         - secure: ZLjNzBaBmU7w1iAZ8D2YRmvNcGjmmCB45If0jujU1jyIW2JFJRSXaGrFBiPqSIJf67kyRXZt6dWFwBGDq9reMj7pCiSvY2UfCyH8IAZSUF90L3pSNCn2gh0al+ZZYs/qKx4JqSbFGgFrnycb2OczRToF3Gj6nCKRZKA6tSzmCdU=
     - d: gdc
     - d: ldc
+
+cache:
+  directories:
+  - $HOME/.dub
