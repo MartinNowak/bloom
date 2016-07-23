@@ -1,5 +1,5 @@
 import std.datetime, std.stdio;
-import dawg.bloom;
+import bloom;
 
 bool bench(size_t BitsPerEntry)(size_t nentries)
 {
