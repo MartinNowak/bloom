@@ -21,7 +21,7 @@ import core.bitop, std.typecons;
  *   $(TROW 1, 63.2%)
  *   $(TROW 2, 39.3%)
  *   $(TROW 3, 23.7%)
- *   $(TROW 4, 14.7%)
+ *   $(TROW 4, 14.7% (default))
  *   $(TROW 5, 9.18%)
  *   $(TROW 6, 5.61%)
  *   $(TROW 7, 3.47%)
@@ -29,7 +29,7 @@ import core.bitop, std.typecons;
  *   $(TROW 9, 1.33%)
  * )
  * Params:
- *  BitsPerEntry = Set the number of bits allocated per entry.
+ *  BitsPerEntry = Set the number of bits allocated per entry (default 4).
  *  cheapHash = Use a faster but less good hash function.
  *
  * Macros:
