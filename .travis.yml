@@ -8,7 +8,14 @@ matrix:
       env:
         - COVERAGE=true
           # set the GH_TOKEN to deploy documentation
-        - secure: ZLjNzBaBmU7w1iAZ8D2YRmvNcGjmmCB45If0jujU1jyIW2JFJRSXaGrFBiPqSIJf67kyRXZt6dWFwBGDq9reMj7pCiSvY2UfCyH8IAZSUF90L3pSNCn2gh0al+ZZYs/qKx4JqSbFGgFrnycb2OczRToF3Gj6nCKRZKA6tSzmCdU=
+        - secure: hlFUuPx9WMLTaW3qLGQJ/5W6tEjutllkeeAQz9S0wfXU8wtyUY+zcLsszlY8fTL5DqaBRPAuyrP5wvLfC5iO3FcABYasAT5O0l8drwznOjJdHguDrcKXORy9zsvNXV4ozUBiI2/YUC6MXVFW03tr0oDPGBLLqn7LNFK8NkO5URY=
+      addons:
+        apt:
+          packages:
+          - libevent-dev
+          - libssl-dev
+          - pkg-config
+          - zlib1g-dev
     - d: dmd
       os: osx
     - d: gdc
