@@ -16,6 +16,7 @@ matrix:
           - libssl-dev
           - pkg-config
           - zlib1g-dev
+      after_success: bash <(curl -s https://codecov.io/bash)
     - d: dmd
       os: osx
     - d: gdc
