@@ -1,14 +1,11 @@
 language: d
-script: ./travis.sh
-sudo: false
 
 matrix:
   include:
     - d: dmd
-      env:
-        - COVERAGE=true
-          # set the GH_TOKEN to deploy documentation
-        - secure: hlFUuPx9WMLTaW3qLGQJ/5W6tEjutllkeeAQz9S0wfXU8wtyUY+zcLsszlY8fTL5DqaBRPAuyrP5wvLfC5iO3FcABYasAT5O0l8drwznOjJdHguDrcKXORy9zsvNXV4ozUBiI2/YUC6MXVFW03tr0oDPGBLLqn7LNFK8NkO5URY=
+      script:
+        - dub test -b unittest-cov
+        - dub build -b ddox
       addons:
         apt:
           packages:
@@ -17,11 +14,18 @@ matrix:
           - pkg-config
           - zlib1g-dev
       after_success: bash <(curl -s https://codecov.io/bash)
+
+      deploy:
+        local_dir: docs
+        provider: pages
+        skip_cleanup: true
+        github_token: $GITHUB_TOKEN # Set in travis-ci.org dashboard
+        on:
+          branch: master
+      # cache ~/.dub so we don't have to rebuild ddox
+      # reset under https://travis-ci.org/MartinNowak/bloom/caches
+      cache: { directories: [$HOME/.dub] }
     - d: dmd
       os: osx
     - d: gdc
     - d: ldc
-
-cache:
-  directories:
-  - $HOME/.dub
