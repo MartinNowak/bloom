@@ -1,4 +1,4 @@
-import std.datetime, std.stdio;
+import std.datetime.stopwatch, std.stdio;
 import bloom;
 
 bool bench(size_t BitsPerEntry)(size_t nentries)
@@ -10,10 +10,10 @@ bool bench(size_t BitsPerEntry)(size_t nentries)
     auto sw = StopWatch(AutoStart.yes);
     foreach (i; 0 .. nentries)
         filter.insert(i);
-    writeln("insert took ", sw.peek.usecs, " µs"); sw.reset();
+    writeln("insert took ", sw.peek.total!"usecs", " µs"); sw.reset();
     foreach (i; 0 .. nentries)
         if (!filter.test(i)) return false;
-    writeln("test took ", sw.peek.usecs, " µs"); sw.reset();
+    writeln("test took ", sw.peek.total!"usecs", " µs"); sw.reset();
     return true;
 }
 
