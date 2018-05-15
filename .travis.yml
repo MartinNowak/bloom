@@ -29,3 +29,8 @@ matrix:
       os: osx
     - d: gdc
     - d: ldc
+
+# only test master and PRs against it
+branches:
+  only:
+    - master
