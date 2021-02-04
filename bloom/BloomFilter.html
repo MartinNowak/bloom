@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0"/>
+		<title>Struct BloomFilter</title>
+		<link rel="stylesheet" href="../css/style.min.css"/>
+		<script type="text/javascript" src="../js/script.min.js"></script>
+	</head>
+	<body onload="setupDdox();">
+		<header></header>
+		<nav id="main-nav">
+			<div>
+				<noscript>
+					<p style="color: red">The search functionality needs JavaScript enabled</p>
+				</noscript>
+				<div id="symbolSearchPane" style="display: none">
+					<form action="#" method="GET">
+						<input id="symbolSearch" type="text" name="q" placeholder="Search for symbols" autocomplete="off" onchange="performSymbolSearch(24);" onkeypress="this.onchange();" onpaste="this.onchange();" oninput="this.onchange();" autofocus/>
+					</form>
+					<ul id="symbolSearchResults" class="symbolList" style="display: none"></ul><script type="application/javascript" src="../symbols.js"></script><script type="application/javascript">var symbolSearchRootDir = "../";
+document.getElementById('symbolSearchPane').style.display = 'block';</script>
+				</div>
+				<ul class="tree-view">
+					<li>
+						<div class="module selected">
+							<a href="../bloom.html">bloom</a>
+						</div>
+					</li>
+				</ul>
+			</div>
+			<p id="main-nav-footer">
+				Built with
+				<a href="https://github.com/MartinNowak/scod">scod</a>
+			</p>
+		</nav>
+		<div id="main-contents">
+			<div>
+				<h1>Struct BloomFilter</h1><p>A bloom filter is a fast and space-efficient probabilistic data
+ structure to test whether an element is member of a set.
+ False positive matches are possible, false negative matches are not.
+ Elements can only be added not removed.
+</p>
+				<div class="prototype">
+					<code class="lang-d">
+						<div class="single-prototype">
+				<span class="kwd">struct</span> <span class="typ">BloomFilter</span>(<span class="typ">ulong</span> BitsPerEntry<span class="pln"> </span><span class="pun">= </span><span class="lit">4</span>, <span class="pln">std<wbr/></span><span class="pun">.</span><span class="pln">typecons<wbr/></span><span class="pun">.</span><span class="typ">Flag</span>!("cheapHash") cheapHash<span class="pln"> </span><span class="pun">= </span><span class="typ">CheapHash<wbr/></span><span class="pun">.</span><span class="pln">yes</span>)
+				<br/>
+				&nbsp;&nbsp;
+				<br/>
+				<span class="kwd">if</span> <span class="pun">(</span><span class="typ">BitsPerEntry </span><span class="pun">&gt; </span><span class="lit">0</span><span class="pun">);</span>
+						</div>
+					</code>
+				</div>
+				<section><p>Asymptotic false-positive rates for different BitsPerEntry settings.
+ <table>   <tr><th>BitsPerEntry</th><th>False Positive Rate</th></tr>
+   <tr><td>1</td><td>63.2%</td></tr>
+   <tr><td>2</td><td>39.3%</td></tr>
+   <tr><td>3</td><td>23.7%</td></tr>
+   <tr><td>4</td><td>14.7% (default)</td></tr>
+   <tr><td>5</td><td>9.18%</td></tr>
+   <tr><td>6</td><td>5.61%</td></tr>
+   <tr><td>7</td><td>3.47%</td></tr>
+   <tr><td>8</td><td>2.15%</td></tr>
+   <tr><td>9</td><td>1.33%</td></tr>
+ </table>
+</p>
+</section>
+
+				<section><h2>Constructors</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<a href="../bloom/BloomFilter.this.html" class="public">
+									<code>this</code>
+								</a>
+								<span class="tableEntryAnnotation">(nentries)</span>
+							</td>
+							<td>construct a Bloom filter optimized for nentries
+</td>
+						</tr>
+					</table>
+				</section>
+				<section><h2>Methods</h2>
+					<table>
+						<col class="caption"/>
+						<tr>
+							<th>Name</th><th>Description</th>
+						</tr>
+						<tr>
+							<td>
+								<a href="../bloom/BloomFilter.clear.html" class="public">
+									<code>clear</code>
+								</a>
+								<span class="tableEntryAnnotation">()</span>
+							</td>
+							<td>clear all bits
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../bloom/BloomFilter.insert.html" class="public">
+									<code>insert</code>
+								</a>
+								<span class="tableEntryAnnotation">(key)</span>
+							</td>
+							<td>insert a key
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../bloom/BloomFilter.reset.html" class="public">
+									<code>reset</code>
+								</a>
+								<span class="tableEntryAnnotation">()</span>
+							</td>
+							<td>free all bits
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../bloom/BloomFilter.resize.html" class="public">
+									<code>resize</code>
+								</a>
+								<span class="tableEntryAnnotation">(nentries)</span>
+							</td>
+							<td>resize to nentries, all bits are cleared
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../bloom/BloomFilter.size.html" class="public">
+									<code>size</code>
+								</a>
+								<span class="tableEntryAnnotation">()</span>
+							</td>
+							<td>get the reserved number of entries
+</td>
+						</tr>
+						<tr>
+							<td>
+								<a href="../bloom/BloomFilter.test.html" class="public">
+									<code>test</code>
+								</a>
+								<span class="tableEntryAnnotation">(key)</span>
+							</td>
+							<td>test membership of key
+</td>
+						</tr>
+					</table>
+				</section>
+				<section><h2>Parameters</h2>
+<table><col class="caption"><tr><th>Name</th><th>Description</th></tr>
+<tr><td id="BitsPerEntry">BitsPerEntry</td><td> Set the number of bits allocated per entry (default 4).</td></tr>
+<tr><td id="cheapHash">cheapHash</td><td> Use a faster but less good hash function.</td></tr>
+</table>
+</section>
+<section><h2>Example</h2>
+<p>Default BloomFilter for 16 entries.
+</p>
+<pre class="code"><code class="lang-d"><span class="kwd">auto </span><span class="pln">filter </span><span class="pun">= </span><span class="typ">BloomFilter</span><span class="pun">!()(</span><span class="lit">16</span><span class="pun">);
+</span><span class="pln">filter<wbr/></span><span class="pun">.</span><span class="pln">insert</span><span class="pun">(</span><span class="lit">1</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">filter<wbr/></span><span class="pun">.</span><span class="pln">test</span><span class="pun">(</span><span class="lit">1</span><span class="pun">));
+</span><span class="kwd">assert</span><span class="pun">(!</span><span class="pln">filter<wbr/></span><span class="pun">.</span><span class="pln">test</span><span class="pun">(</span><span class="lit">2</span><span class="pun">));
+</span><span class="pln">filter<wbr/></span><span class="pun">.</span><span class="pln">insert</span><span class="pun">(</span><span class="lit">2</span><span class="pun">);
+</span><span class="kwd">assert</span><span class="pun">(</span><span class="pln">filter<wbr/></span><span class="pun">.</span><span class="pln">test</span><span class="pun">(</span><span class="lit">2</span><span class="pun">));
+</span></code></pre>
+</section>
+<section><h2>Example</h2>
+<p>Using 6 bits per entry.
+</p>
+<pre class="code"><code class="lang-d"><span class="kwd">auto </span><span class="pln">filter </span><span class="pun">= </span><span class="typ">BloomFilter</span><span class="pun">!</span><span class="lit">6</span><span class="pun">(</span><span class="lit">16</span><span class="pun">);
+</span></code></pre>
+</section>
+<section><h2>Example</h2>
+<p>Using a better but slower hash function.
+</p>
+<pre class="code"><code class="lang-d"><span class="kwd">auto </span><span class="pln">filter </span><span class="pun">= </span><span class="typ">BloomFilter</span><span class="pun">!(</span><span class="lit">4</span><span class="pun">, </span><span class="typ">CheapHash<wbr/></span><span class="pun">.</span><span class="pln">no</span><span class="pun">)(</span><span class="lit">16</span><span class="pun">);
+</span></code></pre>
+</section>
+
+			</div>
+			<footer>
+				<div id="license-info">
+					<p>Martin Nowak
+</p>
+
+					<p>© 2013 - 2021 Martin Nowak
+</p>
+
+					<p><a href="http://www.boost.org/LICENSE_1_0.txt">Boost License 1.0</a>
+</p>
+
+				</div>
+			</footer>
+		</div>
+	</body>
+</html>

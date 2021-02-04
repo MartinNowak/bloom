@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url><loc>http://127.0.0.1/index.html</loc></url>
+<url><loc>http://127.0.0.1/bloom.html</loc></url>
+<url><loc>http://127.0.0.1/bloom/BloomFilter.html</loc></url>
+<url><loc>http://127.0.0.1/bloom/BloomFilter.clear.html</loc></url>
+<url><loc>http://127.0.0.1/bloom/BloomFilter.insert.html</loc></url>
+<url><loc>http://127.0.0.1/bloom/BloomFilter.reset.html</loc></url>
+<url><loc>http://127.0.0.1/bloom/BloomFilter.resize.html</loc></url>
+<url><loc>http://127.0.0.1/bloom/BloomFilter.size.html</loc></url>
+<url><loc>http://127.0.0.1/bloom/BloomFilter.test.html</loc></url>
+<url><loc>http://127.0.0.1/bloom/BloomFilter.this.html</loc></url>
+<url><loc>http://127.0.0.1/bloom/CheapHash.html</loc></url>
+</urlset>
