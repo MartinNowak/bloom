@@ -27,7 +27,6 @@ matrix:
       cache: { directories: [$HOME/.dub] }
     - d: dmd
       os: osx
-    - d: gdc
     - d: ldc
 
 # only test master and PRs against it
