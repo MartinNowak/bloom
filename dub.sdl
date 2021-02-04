@@ -3,11 +3,7 @@ description "A basic bloom filter."
 copyright "Copyright © 2013-, Martin Nowak"
 license "BSL-1.0"
 authors "Martin Nowak"
-mainSourceFile "src/bench.d"
 configuration "library" {
     targetType "library"
-}
-configuration "unittest" {
-    targetType "executable"
 }
 x:ddoxTool "scod"

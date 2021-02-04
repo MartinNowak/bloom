@@ -231,6 +231,30 @@ template BloomFilter(size_t BitsPerEntry=4, bool cheapHash=true) if (BitsPerEntr
     alias BloomFilter = BloomFilter!(BitsPerEntry, cast(CheapHash)cheapHash);
 }
 
+unittest
+{
+    import std.datetime.stopwatch, std.stdio;
+
+    static bool bench(size_t BitsPerEntry)(size_t nentries)
+    {
+        writeln("bench BitsPerEntry ", BitsPerEntry, " nentries ", nentries);
+
+        auto filter = BloomFilter!(4)(nentries);
+
+        auto sw = StopWatch(AutoStart.yes);
+        foreach (i; 0 .. nentries)
+            filter.insert(i);
+        writeln("insert took ", sw.peek.total!"usecs", " µs"); sw.reset();
+        foreach (i; 0 .. nentries)
+            if (!filter.test(i)) return false;
+        writeln("test took ", sw.peek.total!"usecs", " µs"); sw.reset();
+        return true;
+    }
+
+    assert(bench!(4)(1_000_000));
+    assert(bench!(8)(1_000_000));
+}
+
 /// $(LINK2 http://dlang.org/phobos/std_typecons.html#.Flag,Flag) to specify whether or not a cheaper hash is used.
 alias CheapHash = Flag!"cheapHash";
 
